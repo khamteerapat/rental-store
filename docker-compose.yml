@@ -1,0 +1,51 @@
+# Use postgres/example user/password credentials
+
+version: "3.8"
+services:
+
+  db:
+    image: postgres
+    container_name: retal_store_pgdb
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./rental-store-back/database-script/init-structure.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./rental-store-back/database-script/init-data.sql:/docker-entrypoint-initdb.d/data.sql
+    #   - ./Database/Release-Script/UAT/PrdRelease_1/20240305/init.sql:/docker-entrypoint-initdb.d/0.sql
+    #   - ./Database/zoneclasspriceinit.sql:/docker-entrypoint-initdb.d/1.sql
+    #   - ./Database/createTablePartitions.sql:/docker-entrypoint-initdb.d/2.sql
+    #   - ./Database/delete_zoneclassprice.sql:/docker-entrypoint-initdb.d/3.sql
+
+  rental-store-back:
+    container_name: rental-store-back-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rental-store-back:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - 18080:18080
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_API_CORS_ALLOW_ORIGIN: "*" # ตั้งค่า CORS ที่นี่
+    volumes:
+      - ./book-cover:/rental-store/book-cover
+      - ./rental-store-back/minio/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["sh","/entrypoint.sh"]
+  
+
