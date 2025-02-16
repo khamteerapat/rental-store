@@ -16,17 +16,19 @@ const SummaryDialog: React.FC<SummaryDialogProps> = ({ open, onClose, onSubmit, 
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>สรุปการคืนหนังสือ</DialogTitle>
             <DialogContent>
-                <DialogContentText>
+                <p>
                     รายการหนังสือที่ต้องคืน:
-                </DialogContentText>
-                <ul>
-                    {selectedRows.map((row) => (
-                        <li key={row.transaction_id}>{row.book_title} - ค่าปรับ: {row.fine} บาท</li>
-                    ))}
-                </ul>
-                <DialogContentText>
+                </p>
+                {selectedRows.map((row) => (
+                    <DialogContentText key={row.transaction_id}>
+                        {row.book_title} - ค่าปรับ: {row.fine} บาท
+                    </DialogContentText>
+
+                ))}
+
+                <p>
                     ยอดรวมค่าปรับ: {totalFine} บาท
-                </DialogContentText>
+                </p>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">

@@ -11,22 +11,26 @@ interface SummaryRentBookDialogProps {
 
 const SummaryRentBookDialog = (props: SummaryRentBookDialogProps) => {
     const totalBooks = props.selectedBook.reduce((total, row) => total + row.number_in_stock, 0);
+    const totalAmount = props.selectedBook.reduce((total, row) => total + row.price * 0.10, 0);
 
     return (
         <Dialog open={props.open}>
-            <DialogTitle>สรุปการคืนหนังสือ</DialogTitle>
+            <DialogTitle>สรุปการยืมหนังสือ</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    รายการหนังสือที่ต้องคืน:
-                </DialogContentText>
-                <ul>
-                    {props.selectedBook.map((row) => (
-                        <li key={row.title}>{row.title} - จำนวน: {row.number_in_stock} เล่ม</li>
-                    ))}
-                </ul>
-                <DialogContentText>
+                <p>
+                    รายการหนังสือที่ต้องยืม:
+                </p>
+                {props.selectedBook.map((row) => (
+                    <DialogContentText key={row.id}>
+                        {row.title} - จำนวน: {row.number_in_stock} เล่ม
+                    </DialogContentText>
+                ))}
+                <p >
                     ยอดรวม: {totalBooks} เล่ม
-                </DialogContentText>
+                </p>
+                <p className="text-bold weight-bold">
+                    คำนวนยอดรวม: {totalAmount} บาท
+                </p>
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => props.onClose()} color="primary">
