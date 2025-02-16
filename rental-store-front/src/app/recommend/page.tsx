@@ -1,22 +1,28 @@
+"use client"
+
 import { Box, Typography } from "@mui/material"
 import BookGalleryCard from "../../components/recommend/book-gallery-card"
+import { getAllNewBook } from "@/app/api/bookService"
+import { BookPayload } from "@/payload/book-payload"
+import { useEffect, useState } from "react"
 
-const mockData = [
-    {
-        title: "one-piece",
-        category: "Fantasy",
-        imageUrl: "http://localhost:9000/rental-store/book-cover/one-piece.jpg",
-        rating: 4.5
-    },
-    {
-        title: "bleach",
-        category: "Fantasy",
-        imageUrl: "http://localhost:9000/rental-store/book-cover/bleach.jpg",
-        rating: 3.5
-    },
-]
 
 export default function RecommendPage() {
+    const [newBooks, setNewBooks] = useState<BookPayload[]>([]);
+
+
+    useEffect(() => {
+        fetchNewBooks();
+    }, [])
+
+    const fetchNewBooks = async () => {
+        try {
+            const response = await getAllNewBook();
+            setNewBooks(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
     return (
         <>
             <Box className="w-full h-12">
@@ -25,13 +31,13 @@ export default function RecommendPage() {
                 </div>
                 <div className="mt-4">
                     <div className="grid grid-cols-5 gap-4">
-                        {mockData.map((data) => (
+                        {newBooks.map((data) => (
                             <BookGalleryCard
-                                key={data.title}
+                                key={data.id}
                                 name={data.title}
                                 category={data.category}
-                                imageUrl={data.imageUrl}
-                                rating={data.rating} />
+                                imageUrl={data.book_cover}
+                                rating={data.avg_rating} />
                         ))}
                     </div>
                 </div>

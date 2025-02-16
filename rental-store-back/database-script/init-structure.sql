@@ -3,6 +3,7 @@ CREATE TABLE users (
     id UUID PRIMARY key default uuid_generate_v4(),
     username VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
+    full_name VARCHAR NOT NULL,
     role VARCHAR NOT NULL,
     phone_no VARCHAR(20) NOT NULL,
     created_by varchar,
@@ -17,7 +18,7 @@ CREATE TABLE books (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR NOT NULL,
     author VARCHAR NOT NULL,
-    categoey varchar not null,
+    category varchar not null,
     bar_code varchar,
     price DECIMAL(10,2) NOT NULL,
     avg_rating DECIMAL(3,2) DEFAULT 0.0,
@@ -34,7 +35,7 @@ CREATE TABLE rentals_trn (
     book_id UUID NOT NULL,
     user_id UUID NOT NULL,
     rent_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    due_date TIMESTAMP NOT NULL,
+    due_date DATE NOT NULL,
     return_date TIMESTAMP,
     fine DECIMAL(10,2) DEFAULT 0.0,
     created_by varchar,
@@ -49,13 +50,12 @@ CREATE TABLE rentals_trn (
 CREATE TABLE fine_rate_config (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     min_day_late INTEGER NOT NULL,
-    max_day_late INTEGER NOT NULL,
+    max_day_late INTEGER,
     fine_percent DECIMAL(5,2) NOT NULL,
-    reated_by varchar,
+    created_by varchar,
     create_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_update_datetime TIMESTAMP,
-    last_updated_by varchar,
-    CHECK (min_day_late <= max_day_late)
+    last_updated_by varchar
 );
 
 CREATE TABLE rating_books (
@@ -63,7 +63,7 @@ CREATE TABLE rating_books (
     book_id UUID NOT NULL,
     user_id UUID NOT NULL,
     rating decimal(10,2) default 0.0,
-    reated_by varchar,
+    created_by varchar,
     create_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_update_datetime TIMESTAMP,
     last_updated_by varchar,

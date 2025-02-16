@@ -1,6 +1,8 @@
 
 "use client"
 import { useRouter } from "next/navigation"
+import { Button } from "@mui/material"
+import { signOut } from "next-auth/react"
 
 interface MenuInterface {
     title: string
@@ -32,8 +34,12 @@ export default function Sidebar() {
     const router = useRouter()
 
     const onClickMenu = (menu: MenuInterface) => {
-        console.log(menu.path)
+
         router.push(menu.path)
+    }
+
+    const handleLogout = async () => {
+        await signOut()
     }
 
 
@@ -46,6 +52,11 @@ export default function Sidebar() {
                     </button>
                 ))
             }
+            <div className="mt-auto flex justify-end p-2">
+                <Button className="bg-[#955c56]" variant="contained" style={{ border: 'none' }} onClick={() => handleLogout()} color="primary">
+                    ออกจากระบบ
+                </Button>
+            </div>
         </div>
     )
 }

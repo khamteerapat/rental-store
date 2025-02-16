@@ -12,26 +12,11 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    networks:
+      - rental-network
     volumes:
-      - ./rental-store-back/database-script/init-structure.sql:/docker-entrypoint-initdb.d/init.sql
-      # - ./rental-store-back/database-script/init-data.sql:/docker-entrypoint-initdb.d/data.sql
-    #   - ./Database/Release-Script/UAT/PrdRelease_1/20240305/init.sql:/docker-entrypoint-initdb.d/0.sql
-    #   - ./Database/zoneclasspriceinit.sql:/docker-entrypoint-initdb.d/1.sql
-    #   - ./Database/createTablePartitions.sql:/docker-entrypoint-initdb.d/2.sql
-    #   - ./Database/delete_zoneclassprice.sql:/docker-entrypoint-initdb.d/3.sql
-
-  rental-store-back:
-    container_name: rental-store-back-server
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: rental-store-back:latest
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db/postgres
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-    ports:
-      - 18080:18080
+      - ./rental-store-back/database-script/init-structure.sql:/docker-entrypoint-initdb.d/1_structure.sql
+      - ./rental-store-back/database-script/init-data.sql:/docker-entrypoint-initdb.d/2_data.sql
 
   minio:
     image: quay.io/minio/minio
@@ -42,10 +27,58 @@ services:
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
-      MINIO_API_CORS_ALLOW_ORIGIN: "*" # ตั้งค่า CORS ที่นี่
+      MINIO_API_CORS_ALLOW_ORIGIN: "*"
+    networks:
+      - rental-network
     volumes:
       - ./book-cover:/rental-store/book-cover
       - ./rental-store-back/minio/entrypoint.sh:/entrypoint.sh
     entrypoint: ["sh","/entrypoint.sh"]
+
+
+  rental-store-back:
+    container_name: rental-store-back-server
+    build:
+      context: .
+      dockerfile: ./rental-store-back/Dockerfile
+    image: rental-store-back:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db
+      - minio
+    ports:
+      - 8080:8080
+    networks:
+      - rental-network
+
+
+  rental-store-front:
+    container_name: rental-store-front
+    build:
+      context: ./rental-store-front
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_ENDPOINT: http://localhost:8080
+        NEXT_PUBLIC_LOGIN_ENDPOINT: http://rental-store-back:8080
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXTAUTH_SECRET: CausetherebenosunlightIfIloseyoubabyTherellbenoclearskiesIfIloseyoubaby
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_API_ENDPOINT: http://localhost:8080
+      NEXT_PUBLIC_LOGIN_ENDPOINT: http://rental-store-back:8080
+    # volumes:
+    #   - .env.production:/app/.env.production
+    #   - ./rental-store-front:/app
+    #   - /app/node_modules
+    networks:
+      - rental-network
   
 
+networks:
+  rental-network:
+    driver: bridge

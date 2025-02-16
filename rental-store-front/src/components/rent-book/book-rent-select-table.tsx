@@ -14,7 +14,7 @@ interface TableProps {
 }
 const BookRentSelectTable: React.FC<TableProps> = ({ rawData, handleCancelBook }) => {
     return (
-        <TableContainer className='h-full' component={Paper}>
+        <TableContainer className='h-full' component={Paper} style={{ maxHeight: 322, overflow: 'auto' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>

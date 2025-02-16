@@ -4,13 +4,11 @@ const SearchGroup = ({
     placeholder,
     value,
     inputOnChange,
-    inputOnKeyDown,
     buttonOnClick
 }: {
     placeholder: string;
     value: string;
     inputOnChange: any;
-    inputOnKeyDown: any;
     buttonOnClick: any;
 }) => {
     return (
@@ -28,7 +26,6 @@ const SearchGroup = ({
                 }}
                 value={value}
                 onChange={inputOnChange}
-                onKeyDown={inputOnKeyDown}
             />
             <Button
                 variant="contained"

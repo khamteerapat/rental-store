@@ -1,14 +1,15 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
-import { HistoryTableProps } from '@/payload/history-table-payload';
+import { RentalTrnPayload } from '@/payload/rental-trn-payload';
 
 interface SummaryDialogProps {
     open: boolean;
     onClose: () => void;
-    selectedRows: HistoryTableProps[];
+    onSubmit: () => void;
+    selectedRows: RentalTrnPayload[];
 }
 
-const SummaryDialog: React.FC<SummaryDialogProps> = ({ open, onClose, selectedRows }) => {
+const SummaryDialog: React.FC<SummaryDialogProps> = ({ open, onClose, onSubmit, selectedRows }) => {
     const totalFine = selectedRows.reduce((total, row) => total + row.fine, 0);
 
     return (
@@ -20,7 +21,7 @@ const SummaryDialog: React.FC<SummaryDialogProps> = ({ open, onClose, selectedRo
                 </DialogContentText>
                 <ul>
                     {selectedRows.map((row) => (
-                        <li key={row.title}>{row.title} - ค่าปรับ: {row.fine} บาท</li>
+                        <li key={row.transaction_id}>{row.book_title} - ค่าปรับ: {row.fine} บาท</li>
                     ))}
                 </ul>
                 <DialogContentText>
@@ -31,7 +32,7 @@ const SummaryDialog: React.FC<SummaryDialogProps> = ({ open, onClose, selectedRo
                 <Button onClick={onClose} color="primary">
                     ปิด
                 </Button>
-                <Button onClick={onClose} color="primary" variant="contained">
+                <Button onClick={onSubmit} color="primary" variant="contained">
                     ยืนยัน
                 </Button>
             </DialogActions>

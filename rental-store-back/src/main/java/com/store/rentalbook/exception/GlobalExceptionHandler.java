@@ -1,6 +1,7 @@
 package com.store.rentalbook.exception;
 
 import com.store.rentalbook.payload.ResponsePayload;
+import jakarta.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,4 +16,5 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e);
         return ResponseEntity.internalServerError().body(new ResponsePayload<>(DEFAULT_ERROR_MESSAGE,null));
     }
+
 }

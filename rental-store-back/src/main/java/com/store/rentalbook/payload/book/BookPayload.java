@@ -1,5 +1,6 @@
 package com.store.rentalbook.payload.book;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,14 @@ public class BookPayload {
     private String title;
     private String author;
     private String category;
+    @JsonProperty("bar_code")
     private String barCode;
     private BigDecimal price;
+    @JsonProperty("avg_rating")
     private BigDecimal avgRating;
+    @JsonProperty("book_cover")
     private String bookCover;
-    private int numberInStock;
+    @JsonProperty("number_in_stock")
+    private Integer numberInStock;
+
 }

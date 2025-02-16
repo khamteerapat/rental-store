@@ -1,9 +1,11 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/layout/sidebar/sidebar";
-import Topbar from "@/components/layout/topbar/topbar";
 import localFont from "next/font/local";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/lib/authOptions";
+import ClientLayout from "./client-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,33 +27,22 @@ const myFont = localFont({
   weight: "400",
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions)
+
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="grid grid-rows-[60px_1fr] grid-cols-[250px_1fr] h-screen">
-          <div className="col-span-2">
-            <Topbar />
-          </div>
+        <ClientLayout session={session}>{children}</ClientLayout>
 
-          {/* Sidebar */}
-          <div className="row-span-2">
-            <Sidebar />
-          </div>
 
-          {/* Main Screen */}
-          <div className={`bg-gray-200 p-6 col-start-2 row-start-2 h-full w-full overflow-auto ${myFont.className}`}>
-            {children}
-            {/* <main className="p-8 h-full w-full">{children}</main> */}
-          </div>
-        </div>
-        {/* {children} */}
       </body>
     </html>
   );

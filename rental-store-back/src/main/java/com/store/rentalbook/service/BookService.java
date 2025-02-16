@@ -5,6 +5,7 @@ import com.store.rentalbook.repository.book.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,6 +18,14 @@ public class BookService {
             return bookRepository.getAllBooksBySearch(searchText);
         }catch (Exception e){
             throw new RuntimeException("Failed to get books by search text", e);
+        }
+    }
+
+    public List<BookPayload> getAllNewBooks(){
+        try {
+            return bookRepository.getAllBooksAfterCreateTimestamp(LocalDateTime.now().minusMonths(1));
+        }catch (Exception e){
+            throw new RuntimeException("Failed to get new books", e);
         }
     }
 }
