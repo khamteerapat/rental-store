@@ -50,6 +50,10 @@ public class AuthService {
         ));
     }
 
+    public String checkRole(String username) {
+        return userRepository.find(username).getRole();
+    }
+
     public boolean checkPassword(String password,String storedPassword) {
         return password.equals(storedPassword);
     }

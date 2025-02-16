@@ -14,8 +14,78 @@
   }
 }
 
-body {
+/* body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+} */
+
+@font-face {
+  font-family: 'NotoSansThai';
+  src: url('/fonts/NotoSansThai-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansThai';
+  src: url('/fonts/NotoSansThai-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansThai';
+  src: url('/fonts/NotoSansThai-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'NotoSansThai', sans-serif;
+}
+
+h1 {
+  font-weight: 900;
+  /* ตัวหนาสุด */
+}
+
+h2 {
+  font-weight: 700;
+  /* ตัวหนา */
+}
+
+h4 {
+  font-weight: 500;
+  /* ตัวหนา */
+}
+
+p {
+  font-weight: 400;
+  /* ตัวปกติ */
+}
+
+small {
+  font-weight: 300;
+  /* ตัวบาง */
+}
+
+.MuiTable-root {
+  font-family: 'NotoSansThai' !important;
+}
+
+.MuiTable-root,
+.MuiTableCell-root,
+.MuiTableHead-root,
+.MuiTableBody-root,
+.MuiTableRow-root {
+  font-family: 'NotoSansThai', sans-serif !important;
+}
+
+.MuiTypography-root,
+.MuiInputBase-input,
+.MuiButtonBase-root {
+  font-family: 'NotoSansThai', sans-serif !important;
 }

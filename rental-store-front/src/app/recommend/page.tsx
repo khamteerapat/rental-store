@@ -26,8 +26,8 @@ export default function RecommendPage() {
     return (
         <>
             <Box className="w-full h-12">
-                <div className="border-[#955c56] border-2 p-4 border-t-0 border-l-0 border-r-0">
-                    <Typography className="text-primary" variant="h4">หน้าหลัก</Typography>
+                <div className="border-[#955c56] border-2 p-4 border-t-0 border-l-0 border-r-0 font-noto-sans-thai">
+                    <Typography className="text-primary font-noto-sans-thai" variant="h4">หน้าหลัก</Typography>
                 </div>
                 <div className="mt-4">
                     <div className="grid grid-cols-5 gap-4">

@@ -21,8 +21,8 @@ export default function History() {
 
     return (
         <Box className="w-full h-12">
-            <div className="border-[#955c56] border-2 p-4 border-t-0 border-l-0 border-r-0">
-                <Typography className="text-primary" variant="h4">ประวัติการเช่าและกำหนดส่งคืน</Typography>
+            <div className="border-[#955c56] border-2 p-4 border-t-0 border-l-0 border-r-0 font-noto-sans-thai">
+                <Typography className="text-primary font-noto-sans-thai" variant="h4">ประวัติการเช่าและกำหนดส่งคืน</Typography>
             </div>
             <div className="mt-4">
                 <HistoryTable rawData={historyData} setSelectedRows={() => { }} />

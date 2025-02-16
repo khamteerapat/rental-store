@@ -1,13 +1,14 @@
-"use client" // ✅ ทำให้เป็น Client Component
+"use client"
 
 import Sidebar from "@/components/layout/sidebar/sidebar";
 import Topbar from "@/components/layout/topbar/topbar";
 import ModalManager from "@/components/global/modal-manager";
 import Provider from "./provider"
+import "./globals.css";
 import { usePathname } from "next/navigation"
 
 export default function ClientLayout({ children, session }: { children: React.ReactNode; session: any }) {
-    const pathname = usePathname() // ✅ ใช้ได้เพราะเป็น Client Component
+    const pathname = usePathname()
     const isLoginPage = pathname === "/login"
 
     return (
@@ -26,7 +27,7 @@ export default function ClientLayout({ children, session }: { children: React.Re
                         <Sidebar />
                     </div>
 
-                    <div className="bg-gray-200 p-6 col-start-2 row-start-2 h-full w-full overflow-auto">
+                    <div className="bg-gray-200 p-6 col-start-2 row-start-2 h-full w-full overflow-auto font-noto-sans-thai">
                         {children}
                         <ModalManager />
                     </div>

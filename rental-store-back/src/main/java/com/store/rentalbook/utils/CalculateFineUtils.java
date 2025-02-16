@@ -17,7 +17,7 @@ public class CalculateFineUtils {
             BigDecimal fineRate = new BigDecimal("10");
             if(fineRateConfigList != null && !fineRateConfigList.isEmpty()){
                 fineRate = fineRateConfigList.stream()
-                        .filter(f -> f.getMinDayLate() <= overdueReturnDate && (f.getMaxDayLate() >= overdueReturnDate || f.getMaxDayLate() == null))
+                        .filter(f -> f.getMinDayLate() <= overdueReturnDate && (f.getMaxDayLate() == null || f.getMaxDayLate() >= overdueReturnDate ))
                         .map(FineRateConfig::getFinePercent)
                         .max(BigDecimal::compareTo)
                         .orElse(BigDecimal.ZERO);
