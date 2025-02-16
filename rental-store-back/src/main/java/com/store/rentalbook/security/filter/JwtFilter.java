@@ -22,7 +22,6 @@ public class JwtFilter extends GenericFilter {
 
     private static final List<String> EXCLUDED_PATHS = List.of(
             "/api/v1/auth/login",
-            "/api/v1/auth/register",
             "/public"
     );
 

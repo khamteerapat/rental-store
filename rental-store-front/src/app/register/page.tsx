@@ -1,45 +1,68 @@
 "use client"
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { register } from '../api/authService';
+import { useSetAtom } from "jotai";
+import { modalAtom } from '@/atoms/modal-atom';
+import { CardContent } from '@mui/material';
 
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const router = useRouter();
+    const [fullName, setFullName] = useState('');
+    const setModal = useSetAtom(modalAtom);
 
     const handleRegister = async () => {
-        const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
-
-        if (response.ok) {
-            router.push('/login');
+        const response = await register({ username, password, fullname: fullName });
+        console.log('response:', response);
+        if (response.message === 'Success') {
+            setModal({ type: 'success', open: true })
         } else {
-            alert('Registration failed');
+            setModal({ open: true, type: 'failure' })
         }
+
+        setUsername('');
+        setPassword('');
+        setFullName('');
     };
 
     return (
-        <div>
-            <h1>Register</h1>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-            />
-            <button onClick={handleRegister}>Register</button>
+        <div className="flex items-center bg-[#955c56] justify-center w-full h-screen ">
+            <div className="bg-[#FFF] p-8  rounded-lg shadow-lg w-96">
+                <h2 className="text-[#955c56] text-2xl font-bold mb-4 text-center">สมัครสมาชิก</h2>
+                <CardContent>
+                    <label className="block text-[#955c56] mb-2">เบอร์โทรศัพท์</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 mb-4 rounded bg-[#955c56] text-white focus:outline-none"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                    <label className="block text-[#955c56] mb-2">เลขบัตรประชาชน</label>
+                    <input
+                        type="password"
+                        className="w-full p-2 mb-4 rounded bg-[#955c56] text-white focus:outline-none"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <label className="block text-[#955c56] mb-2">ชื่อ - นามสกุล</label>
+                    <input
+                        type="text"
+                        className="w-full p-2 mb-4 rounded bg-[#955c56] text-white focus:outline-none"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required
+                    />
+                    <button onClick={() => handleRegister()}
+                        type="submit"
+                        className="w-full p-3 text-white rounded bg-[#955c56] transition"
+                    >
+                        สมัครสมาชิก
+                    </button>
+                </CardContent>
+            </div>
         </div>
     );
 };

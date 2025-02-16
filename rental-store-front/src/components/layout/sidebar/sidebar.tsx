@@ -27,6 +27,10 @@ const menuPath: MenuProps[] = [
     {
         code: "RETURN",
         path: "/return-book"
+    },
+    {
+        code: "REGISTER",
+        path: "/register"
     }
 ]
 

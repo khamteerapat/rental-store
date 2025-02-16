@@ -8,6 +8,7 @@ import com.store.rentalbook.payload.auth.LoginResponsePayload;
 import com.store.rentalbook.payload.rent.RentalTransactionPayload;
 import com.store.rentalbook.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +32,12 @@ public class AuthController {
 
     @PostMapping("/register-admin")
     public ResponseEntity<ResponsePayload<String>> registerAdmin(@RequestBody LoginRequestPayload requestPayload){
-        authService.registerUser(requestPayload,"ADMIN");
-        return ResponseEntity.ok(new ResponsePayload<>("Success","Admin registered successfully"));
+        try {
+            authService.registerUser(requestPayload, "ADMIN");
+            return ResponseEntity.ok(new ResponsePayload<>("Success", "Admin registered successfully"));
+        }catch (DataIntegrityViolationException e){
+            return ResponseEntity.badRequest().body(new ResponsePayload<>("Failed", "Username already exists"));
+        }
     }
 
     @PostMapping("/login")
